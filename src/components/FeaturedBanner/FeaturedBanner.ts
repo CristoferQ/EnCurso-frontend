@@ -1,6 +1,40 @@
 import type { Course } from '../../models';
+import { CourseStatus } from '../../models';
 import { renderIcon } from '../../utils/icon.utils';
 import { Flame, BookOpen } from 'lucide';
+
+function getCourseLevelBadge(status?: CourseStatus) {
+  switch (status) {
+    case CourseStatus.BEGINNER:
+      return {
+        label: 'Principiante',
+        badgeClass:
+          'bg-emerald-950/90 text-emerald-300 border border-emerald-700 font-black tracking-widest shadow',
+        icon: BookOpen,
+      };
+    case CourseStatus.INTERMEDIATE:
+      return {
+        label: 'Intermedio',
+        badgeClass:
+          'bg-amber-950/90 text-amber-300 border border-amber-700 font-black tracking-widest shadow',
+        icon: BookOpen,
+      };
+    case CourseStatus.ADVANCED:
+      return {
+        label: 'Avanzado',
+        badgeClass:
+          'bg-red-950/90 text-red-300 border border-red-700 font-black tracking-widest shadow',
+        icon: BookOpen,
+      };
+    default:
+      return {
+        label: 'Nivel por confirmar',
+        badgeClass:
+          'bg-zinc-900/90 text-zinc-200 border border-zinc-700 font-extrabold tracking-wider shadow',
+        icon: BookOpen,
+      };
+  }
+}
 
 /**
  * Genera el Banner de curso destacado con estilo moderno y enfocado en aprendizaje.
@@ -13,6 +47,7 @@ export function createFeaturedBannerElement(course: Course): HTMLElement {
   const imageUrl = course.imageUrl || '/images/punk1.png';
   const title = course.title || 'Curso Destacado';
   const description = course.description || 'Descripción del curso no disponible';
+  const levelBadge = getCourseLevelBadge(course.status);
 
   container.innerHTML = `
     <div class="relative min-h-[300px] md:min-h-[350px] flex flex-col justify-end p-5 md:p-7 overflow-hidden">
@@ -30,6 +65,10 @@ export function createFeaturedBannerElement(course: Course): HTMLElement {
           <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-black uppercase tracking-widest bg-sky-700 text-white shadow">
             ${renderIcon(Flame, 'w-3 h-3 fill-current')}
             CURSO DESTACADO
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider ${levelBadge.badgeClass}">
+            ${renderIcon(levelBadge.icon, 'w-3 h-3')}
+            ${levelBadge.label}
           </span>
         </div>
 

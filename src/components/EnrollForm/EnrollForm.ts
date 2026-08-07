@@ -79,7 +79,7 @@ function renderSuccessState(
   email: string,
   course?: Course,
 ): void {
-  const checkIcon = renderIcon(CheckCircle2, 'w-8 h-8 text-red-500 mb-1');
+  const checkIcon = renderIcon(CheckCircle2, 'w-8 h-8 text-sky-500 mb-1');
   const courseName = course ? course.title : 'Evento EnCurso';
 
   sectionElement.innerHTML = `
@@ -89,7 +89,7 @@ function renderSuccessState(
         ¡Inscripción Confirmada!
       </h3>
       <p class="text-xs text-zinc-300 max-w-md">
-        <strong class="text-red-400 font-bold">${courseName}</strong>.
+        <strong class="text-sky-400 font-bold">${courseName}</strong>.
       </p>
       <p class="text-[11px] text-zinc-400 mt-1">
         Enviamos un correo de confirmación a <span class="text-zinc-200 font-semibold">${email}</span>.
@@ -127,8 +127,6 @@ export function createBookingFormElement(
 
   const form = sectionElement.querySelector<HTMLFormElement>('#form-reserva');
   const emailInput = sectionElement.querySelector<HTMLInputElement>('#email');
-  const cantidadInput =
-    sectionElement.querySelector<HTMLInputElement>('#cantidad');
   const errorBlock = sectionElement.querySelector<HTMLElement>('#bloque-error');
 
   const showError = (msg: string) => {
@@ -141,7 +139,7 @@ export function createBookingFormElement(
     errorBlock.classList.remove('hidden');
   };
 
-  if (form && emailInput && cantidadInput && errorBlock) {
+  if (form && emailInput && errorBlock) {
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       errorBlock.classList.add('hidden');
@@ -159,6 +157,11 @@ export function createBookingFormElement(
       if (!emailRegex.test(email)) {
         showError('Por favor, ingresa un correo electrónico válido.');
         emailInput.focus();
+        return;
+      }
+
+      if (!course) {
+        showError('Se debe seleccionar un curso para inscribirse.');
         return;
       }
 
