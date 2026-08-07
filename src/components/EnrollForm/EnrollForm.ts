@@ -10,9 +10,9 @@ export function renderEnrollForm(course?: Course, initialEmail = ''): string {
   const deselectIcon = renderIcon(X, 'w-4 h-4 stroke-2 text-white');
   const courseBadge = course
     ? `
-      <div class="mb-4 p-3 bg-zinc-900/90 border border-zinc-800 rounded-lg flex flex-col gap-3">
-        <div class="flex items-start justify-between gap-3">
-          <div class="flex items-center gap-2 overflow-hidden">
+      <div class="mb-4 p-3 bg-zinc-900/90 border border-zinc-800 rounded-lg flex flex-col">
+        <div class="flex items-start gap-2">
+          <div class="flex min-w-0 flex-1 items-center gap-2 overflow-hidden">
             <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-sky-950 text-white border border-sky-800 shrink-0">
               SELECCIONADO
             </span>
@@ -21,13 +21,13 @@ export function renderEnrollForm(course?: Course, initialEmail = ''): string {
           <button
             type="button"
             id="btn-deselect-course"
-            class="inline-flex items-center justify-center h-8 w-8 rounded-lg bg-red-700 border border-red-800 text-white shadow-sm shadow-red-900/20 hover:bg-red-600 transition-colors duration-150"
+            class="inline-flex items-center justify-center h-8 w-8 rounded-lg bg-red-700 border border-red-800 text-white shadow-sm shadow-red-900/20 hover:bg-red-600 transition-colors duration-150 shrink-0"
             aria-label="Deseleccionar curso"
           >
             ${deselectIcon}
           </button>
         </div>
-        <p class="text-xs text-zinc-400 line-clamp-3">${course.description}</p>
+        <p class="text-xs text-zinc-400 line-clamp-3 mt-0">${course.description}</p>
       </div>
     `
     : '';
@@ -89,7 +89,7 @@ export function renderEnrollForm(course?: Course, initialEmail = ''): string {
         <button 
           type="submit" 
           ${buttonDisabledAttr}
-          class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-sky-600 text-white font-black text-xs md:text-sm uppercase tracking-wider border border-sky-600 shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all duration-150 cursor-pointer ${buttonClassState}"
+          class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-zinc-700 border-zinc-600 text-white font-black text-xs md:text-sm uppercase tracking-wider border opacity-70 cursor-not-allowed shadow-none transition-all duration-150 ${buttonClassState}"
         >
           ${renderIcon(BookOpen, 'w-4 h-4')}
           <span>Inscribirme</span>
@@ -176,8 +176,15 @@ export function createEnrollFormElement(
     const hasEmail = emailInput.value.trim().length > 0;
     const canSubmit = !!course && hasEmail;
     submitButton.disabled = !canSubmit;
-    submitButton.classList.toggle('opacity-50', !canSubmit);
+    submitButton.classList.toggle('bg-zinc-700', !canSubmit);
+    submitButton.classList.toggle('border-zinc-600', !canSubmit);
+    submitButton.classList.toggle('opacity-70', !canSubmit);
     submitButton.classList.toggle('cursor-not-allowed', !canSubmit);
+    submitButton.classList.toggle('shadow-none', !canSubmit);
+    submitButton.classList.toggle('bg-sky-600', canSubmit);
+    submitButton.classList.toggle('border-sky-600', canSubmit);
+    submitButton.classList.toggle('opacity-100', canSubmit);
+    submitButton.classList.toggle('cursor-pointer', canSubmit);
   };
 
   if (form && emailInput && errorBlock && submitButton) {
