@@ -106,7 +106,7 @@ function renderSuccessState(
 
   const btnNuevaReserva = sectionElement.querySelector('#btn-nueva-reserva');
   btnNuevaReserva?.addEventListener('click', () => {
-    const freshElement = createBookingFormElement(course);
+    const freshElement = createBookingFormElement();
     sectionElement.replaceWith(freshElement);
   });
 }

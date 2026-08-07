@@ -44,7 +44,7 @@ export function createFeaturedBannerElement(course: Course): HTMLElement {
   container.className =
     'w-full mb-6 rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl relative group';
 
-  const imageUrl = course.imageUrl || '/images/punk1.png';
+  const imageUrl = course.imageUrl || '/images/course1.png';
   const title = course.title || 'Curso Destacado';
   const description = course.description || 'Descripción del curso no disponible';
   const levelBadge = getCourseLevelBadge(course.status);
@@ -54,11 +54,11 @@ export function createFeaturedBannerElement(course: Course): HTMLElement {
       <img 
         src="${imageUrl}" 
         alt="${title}" 
-        class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 brightness-75 contrast-125"
-        onerror="this.src='/images/punk1.png'"
+        class="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500"
+        onerror="this.src='/images/course1.png'"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-transparent"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
 
       <div class="relative z-10 max-w-2xl flex flex-col gap-3">
         <div class="flex flex-wrap items-center gap-2">

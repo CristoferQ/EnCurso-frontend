@@ -71,22 +71,21 @@ export function generateCourseCardHtml(course: Course): string {
   const title = course.title || 'Curso sin título';
   const description = course.description || 'Descripción del curso no disponible';
   const id = course.id || 'desconocido';
-  const imageUrl = course.imageUrl || '/images/punk1.png';
+  const imageUrl = course.imageUrl || '/images/course1.png';
 
   return `
     <article 
-      class="group bg-zinc-950 border border-zinc-800/90 rounded-xl overflow-hidden shadow-lg hover:border-zinc-500 transition-all duration-200 flex flex-col justify-between h-full relative" 
+      class="group bg-zinc-950 border border-zinc-800/90 rounded-xl overflow-hidden shadow-sm hover:border-zinc-500 transition-all duration-200 flex flex-col justify-between h-full relative" 
       data-id="${id}"
     >
       <!-- Cabecera con Imagen de Portada Compacta -->
-      <div class="relative w-full h-40 overflow-hidden bg-zinc-900 shrink-0">
+      <div class="relative w-full h-40 overflow-hidden shrink-0">
         <img 
           src="${imageUrl}" 
           alt="${title}" 
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 contrast-110 brightness-90"
-          onerror="this.src='/images/punk1.png'"
+          class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+          onerror="this.src='/images/course1.png'"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-black/40"></div>
         <span class="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-bold uppercase ${config.badgeClass}">
           ${renderIcon(config.icon, 'w-3 h-3')}
           ${config.label}
@@ -103,13 +102,6 @@ export function generateCourseCardHtml(course: Course): string {
             ${description}
           </p>
         </header>
-
-        <div class="flex flex-col gap-1.5 pt-2.5 border-t border-zinc-800/80 text-xs text-zinc-300">
-          <div class="flex items-center gap-2">
-            ${renderIcon(BookOpen, 'w-3.5 h-3.5 text-zinc-400 shrink-0')}
-            <span><strong class="text-zinc-400 font-semibold">Nivel:</strong> ${config.label}</span>
-          </div>
-        </div>
 
         <footer class="mt-auto pt-1">
           <button 
