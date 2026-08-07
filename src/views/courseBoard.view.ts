@@ -56,13 +56,20 @@ export class CourseBoardView {
    * Renderiza el formulario de reserva de entradas.
    * @param selectedCourse Concierto opcional preseleccionado para la reserva.
    */
-  renderBookingForm(selectedCourse?: Course): void {
+  renderBookingForm(selectedCourse?: Course, initialEmail = ''): void {
     if (!this.bookingContainer) return;
 
     try {
-      const bookingElement = createBookingFormElement(selectedCourse, (data) => {
-        console.log('[EnCurso] Reserva realizada con éxito:', data);
-      });
+      const bookingElement = createBookingFormElement(
+        selectedCourse,
+        (data) => {
+          console.log('[EnCurso] Reserva realizada con éxito:', data);
+        },
+        (currentEmail) => {
+          this.renderBookingForm(undefined, currentEmail);
+        },
+        initialEmail,
+      );
       this.bookingContainer.replaceChildren(bookingElement);
     } catch (bookingError) {
       console.error(
@@ -151,7 +158,10 @@ export class CourseBoardView {
       }
 
       if (selectedCourse) {
-        this.renderBookingForm(selectedCourse);
+        const currentEmail = this.bookingContainer
+          ?.querySelector<HTMLInputElement>('#email')
+          ?.value.trim();
+        this.renderBookingForm(selectedCourse, currentEmail ?? '');
         this.bookingContainer?.scrollIntoView({ behavior: 'smooth' });
       }
     };
