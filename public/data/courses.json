@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1",
+    "title": "Introducción a TDD con Java",
+    "description": "Aprende las bases de Test Driven Development usando Java y JUnit.",
+    "status": "BEGINNER",
+    "imageUrl": "http://localhost:5173/images/course1.png",
+    "isFeatured": true
+  },
+  {
+    "id": "2",
+    "title": "Automatización de pruebas unitarias",
+    "description": "Domina la escritura de pruebas unitarias efectivas y mantenibles.",
+    "status": "BEGINNER",
+    "imageUrl": "http://localhost:5173/images/course2.png",
+    "isFeatured": false
+  },
+  {
+    "id": "3",
+    "title": "Patrones de diseño y refactorización",
+    "description": "Aplica patrones de diseño y refactoriza código con seguridad gracias a pruebas.",
+    "status": "INTERMEDIATE",
+    "imageUrl": "http://localhost:5173/images/course3.png",
+    "isFeatured": false
+  },
+  {
+    "id": "4",
+    "title": "Testing de integración en aplicaciones web",
+    "description": "Aprende a probar la integración entre frontend y backend en aplicaciones modernas.",
+    "status": "ADVANCED",
+    "imageUrl": "http://localhost:5173/images/course4.png",
+    "isFeatured": false
+  }
+]
