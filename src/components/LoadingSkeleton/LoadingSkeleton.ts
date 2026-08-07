@@ -14,7 +14,7 @@ export function createBannerSkeletonElement(): HTMLElement {
 }
 
 /**
- * Genera esqueletos de carga para la grilla de conciertos.
+ * Genera esqueletos de carga para la grilla de cursos.
  */
 export function createGridSkeletonElement(count: number = 3): DocumentFragment {
   const fragment = document.createDocumentFragment();

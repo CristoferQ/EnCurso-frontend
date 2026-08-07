@@ -27,7 +27,7 @@ export class CourseService {
     console.log('status => ', response);
     if (!response.ok) {
       throw new Error(
-        `Error HTTP al obtener los conciertos: status ${response.status} (${response.statusText})`,
+        `Error HTTP al obtener los cursos: status ${response.status} (${response.statusText})`,
       );
     }
 
@@ -35,7 +35,7 @@ export class CourseService {
     console.log('rawData => ', rawData);
     if (!Array.isArray(rawData)) {
       throw new Error(
-        'La respuesta de conciertos no tiene un formato válido (se esperaba un array).',
+        'La respuesta de cursos no tiene un formato válido (se esperaba un array).',
       );
     }
 

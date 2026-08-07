@@ -4,9 +4,9 @@ import { Mail, CheckCircle2, AlertCircle, BookOpen, X } from 'lucide';
 
 /**
  * Genera la estructura HTML declarativa del formulario de inscripcion de cursos.
- * @param course Curso opcional preseleccionado para la reserva.
+ * @param course Curso opcional preseleccionado para la inscripcion.
  */
-export function renderBookingForm(course?: Course, initialEmail = ''): string {
+export function renderEnrollForm(course?: Course, initialEmail = ''): string {
   const deselectIcon = renderIcon(X, 'w-4 h-4 stroke-2 text-white');
   const courseBadge = course
     ? `
@@ -67,7 +67,7 @@ export function renderBookingForm(course?: Course, initialEmail = ''): string {
       ${courseBadge}
       ${courseHint}
 
-      <form id="form-reserva" class="space-y-4" novalidate>
+      <form id="form-inscripcion" class="space-y-4" novalidate>
         <div class="space-y-1.5">
           <label for="email" class="block text-xs font-extrabold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
             ${mailIcon}
@@ -134,7 +134,7 @@ function renderSuccessState(
 
   const btnNuevaReserva = sectionElement.querySelector('#btn-nueva-reserva');
   btnNuevaReserva?.addEventListener('click', () => {
-    const freshElement = createBookingFormElement();
+    const freshElement = createEnrollFormElement();
     sectionElement.replaceWith(freshElement);
   });
 }
@@ -142,7 +142,7 @@ function renderSuccessState(
 /**
  * Crea e instancia un elemento HTMLElement interactivo con validación de formulario.
  */
-export function createBookingFormElement(
+export function createEnrollFormElement(
   course?: Course,
   onSubmitSuccess?: (data: {
     email: string;
@@ -152,10 +152,10 @@ export function createBookingFormElement(
   initialEmail = '',
 ): HTMLElement {
   const container = document.createElement('div');
-  container.innerHTML = renderBookingForm(course, initialEmail).trim();
+  container.innerHTML = renderEnrollForm(course, initialEmail).trim();
   const sectionElement = container.firstElementChild as HTMLElement;
 
-  const form = sectionElement.querySelector<HTMLFormElement>('#form-reserva');
+  const form = sectionElement.querySelector<HTMLFormElement>('#form-inscripcion');
   const emailInput = sectionElement.querySelector<HTMLInputElement>('#email');
   const submitButton = sectionElement.querySelector<HTMLButtonElement>('button[type="submit"]');
   const deselectButton = sectionElement.querySelector<HTMLButtonElement>('#btn-deselect-course');

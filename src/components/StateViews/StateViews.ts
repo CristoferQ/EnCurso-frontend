@@ -27,7 +27,7 @@ export function createErrorStateElement(
 }
 
 /**
- * Genera la vista de estado vacío cuando no hay conciertos disponibles.
+ * Genera la vista de estado vacío cuando no hay cursos disponibles.
  */
 export function createEmptyStateElement(): HTMLElement {
   const container = document.createElement('div');

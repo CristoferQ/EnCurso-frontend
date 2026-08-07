@@ -21,7 +21,7 @@ async function bootstrap(): Promise<void> {
       return;
     }
 
-    // 4. Renderizado exitoso de la cartelera
+    // 4. Renderizado exitoso de los cursos
     view.renderCourses(courses);
   } catch (error) {
     console.error('[En Curso] Error crítico durante la inicialización:', error);

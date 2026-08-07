@@ -56,13 +56,13 @@ function getStatusConfig(status?: CourseStatus) {
 }
 
 /**
- * Genera el HTML declarativo y seguro de la tarjeta del concierto.
+ * Genera el HTML declarativo y seguro de la tarjeta del curso.
  */
 export function generateCourseCardHtml(course: Course): string {
   if (!course) {
     return `
       <article class="h-full bg-zinc-950 border border-red-600/40 rounded-xl p-5 text-center text-red-400 flex flex-col justify-center">
-        <p class="font-bold uppercase text-sm">Información de concierto no disponible</p>
+        <p class="font-bold uppercase text-sm">Información de curso no disponible</p>
       </article>
     `;
   }
@@ -119,7 +119,7 @@ export function generateCourseCardHtml(course: Course): string {
 }
 
 /**
- * Crea e instancia un nodo HTMLElement seguro para la tarjeta del concierto.
+ * Crea e instancia un nodo HTMLElement seguro para la tarjeta del curso.
  */
 export function createCourseCardElement(course: Course): HTMLElement {
   try {
@@ -140,7 +140,7 @@ export function createCourseCardElement(course: Course): HTMLElement {
       /* id getter también lanzó */
     }
     console.error(
-      `[EnCurso] Error al crear la tarjeta del concierto (${courseId}):`,
+      `[EnCurso] Error al crear la tarjeta del curso (${courseId}):`,
       error,
     );
 
@@ -151,7 +151,7 @@ export function createCourseCardElement(course: Course): HTMLElement {
     const icon = renderIcon(AlertTriangle, 'w-5 h-5 text-red-400');
     fallbackArticle.innerHTML = `
       ${icon}
-      <p class="text-xs font-black uppercase">No se pudo cargar esta tocata.</p>
+      <p class="text-xs font-black uppercase">No se pudo cargar este curso.</p>
     `;
     return fallbackArticle;
   }
