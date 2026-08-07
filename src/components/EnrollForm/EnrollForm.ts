@@ -46,7 +46,7 @@ export function renderEnrollForm(course?: Course, initialEmail = ''): string {
 
   const mailIcon = renderIcon(Mail, 'w-3.5 h-3.5 text-zinc-400');
   const buttonDisabledAttr = course ? '' : 'disabled';
-  const buttonClassState = course ? '' : 'opacity-50 cursor-not-allowed';
+  const buttonClassState = course ? '' : 'bg-zinc-700 border-zinc-600 opacity-70 cursor-not-allowed shadow-none';
 
   return `
     <section class="w-full bg-zinc-950 border border-zinc-800/90 rounded-xl p-5 md:p-6 shadow-xl relative overflow-hidden">
@@ -89,7 +89,7 @@ export function renderEnrollForm(course?: Course, initialEmail = ''): string {
         <button 
           type="submit" 
           ${buttonDisabledAttr}
-          class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-black text-xs md:text-sm uppercase tracking-wider border border-sky-600 shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all duration-150 cursor-pointer ${buttonClassState}"
+          class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-sky-600 text-white font-black text-xs md:text-sm uppercase tracking-wider border border-sky-600 shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all duration-150 cursor-pointer ${buttonClassState}"
         >
           ${renderIcon(BookOpen, 'w-4 h-4')}
           <span>Inscribirme</span>
@@ -100,7 +100,7 @@ export function renderEnrollForm(course?: Course, initialEmail = ''): string {
 }
 
 /**
- * Muestra el estado de éxito tras completar la reserva.
+ * Muestra el estado de éxito tras completar la inscripción.
  */
 function renderSuccessState(
   sectionElement: HTMLElement,
@@ -124,16 +124,16 @@ function renderSuccessState(
       </p>
       <button 
         type="button" 
-        id="btn-nueva-reserva" 
-        class="mt-4 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 text-xs font-extrabold uppercase tracking-wider rounded-lg border border-zinc-700 transition-colors cursor-pointer"
+        id="btn-nueva-inscripcion" 
+        class="mt-4 px-4 py-2 bg-sky-900 hover:bg-sky-700 text-zinc-200 text-xs font-extrabold uppercase tracking-wider rounded-lg border border-sky-600 transition-colors cursor-pointer"
       >
         Inscribirse en otro curso
       </button>
     </div>
   `;
 
-  const btnNuevaReserva = sectionElement.querySelector('#btn-nueva-reserva');
-  btnNuevaReserva?.addEventListener('click', () => {
+  const btnNuevaInscripcion = sectionElement.querySelector('#btn-nueva-inscripcion');
+  btnNuevaInscripcion?.addEventListener('click', () => {
     const freshElement = createEnrollFormElement();
     sectionElement.replaceWith(freshElement);
   });
