@@ -11,7 +11,7 @@ export function renderBookingForm(course?: Course): string {
     ? `
       <div class="mb-4 p-3 bg-zinc-900/90 border border-zinc-800 rounded-lg flex flex-col gap-3">
         <div class="flex items-center gap-2 overflow-hidden">
-          <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-red-950 text-red-300 border border-red-800 shrink-0">
+          <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-sky-950 text-white border border-sky-800 shrink-0">
             SELECCIONADO
           </span>
           <span class="text-xs font-bold text-white truncate">${course.title}</span>
@@ -51,7 +51,7 @@ export function renderBookingForm(course?: Course): string {
             type="email" 
             id="email" 
             name="email" 
-            class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all duration-150" 
+            class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all duration-150" 
             placeholder="ejemplo@correo.com" 
             required
           />
@@ -61,7 +61,7 @@ export function renderBookingForm(course?: Course): string {
 
         <button 
           type="submit" 
-          class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-red-600 hover:bg-red-500 text-white font-black text-xs md:text-sm uppercase tracking-wider border border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all duration-150 cursor-pointer"
+          class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-black text-xs md:text-sm uppercase tracking-wider border border-sky-600 shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all duration-150 cursor-pointer"
         >
           ${renderIcon(BookOpen, 'w-4 h-4')}
           <span>Inscribirme</span>
@@ -77,7 +77,6 @@ export function renderBookingForm(course?: Course): string {
 function renderSuccessState(
   sectionElement: HTMLElement,
   email: string,
-  cantidad: number,
   course?: Course,
 ): void {
   const checkIcon = renderIcon(CheckCircle2, 'w-8 h-8 text-red-500 mb-1');
@@ -90,7 +89,6 @@ function renderSuccessState(
         ¡Inscripción Confirmada!
       </h3>
       <p class="text-xs text-zinc-300 max-w-md">
-        Se han reservado <strong class="text-white font-extrabold">${cantidad} plaza(s)</strong> para 
         <strong class="text-red-400 font-bold">${courseName}</strong>.
       </p>
       <p class="text-[11px] text-zinc-400 mt-1">
@@ -120,7 +118,6 @@ export function createBookingFormElement(
   course?: Course,
   onSubmitSuccess?: (data: {
     email: string;
-    cantidad: number;
     course?: Course;
   }) => void,
 ): HTMLElement {
@@ -151,8 +148,6 @@ export function createBookingFormElement(
       errorBlock.innerHTML = '';
 
       const email = emailInput.value.trim();
-      const cantidadVal = cantidadInput.value.trim();
-      const cantidad = parseInt(cantidadVal, 10);
 
       if (!email) {
         showError('El correo electrónico es requerido.');
@@ -167,21 +162,9 @@ export function createBookingFormElement(
         return;
       }
 
-      if (!cantidadVal || isNaN(cantidad)) {
-        showError('Por favor, ingresa la cantidad de entradas.');
-        cantidadInput.focus();
-        return;
-      }
-
-      if (cantidad < 1 || cantidad > 10) {
-        showError('La cantidad de entradas debe ser entre 1 y 10.');
-        cantidadInput.focus();
-        return;
-      }
-
-      renderSuccessState(sectionElement, email, cantidad, course);
+      renderSuccessState(sectionElement, email, course);
       if (onSubmitSuccess) {
-        onSubmitSuccess({ email, cantidad, course });
+        onSubmitSuccess({ email, course });
       }
     });
   }

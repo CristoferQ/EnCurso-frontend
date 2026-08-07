@@ -16,7 +16,7 @@ function getStatusConfig(status?: CourseStatus) {
         buttonText: 'Inscribirse',
         buttonDisabled: false,
         buttonClass:
-          'bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider border border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)] cursor-pointer',
+          'bg-sky-600 hover:bg-sky-500 text-white font-black uppercase tracking-wider border border-sky-500 shadow-[0_0_12px_rgba(56,189,248,0.3)] cursor-pointer',
         icon: BookOpen,
       };
     case CourseStatus.INTERMEDIATE:
@@ -27,7 +27,7 @@ function getStatusConfig(status?: CourseStatus) {
         buttonText: 'Inscribirse',
         buttonDisabled: false,
         buttonClass:
-          'bg-amber-600 hover:bg-amber-500 text-white font-black uppercase tracking-wider border border-amber-500 shadow-[0_0_12px_rgba(251,191,36,0.3)] cursor-pointer',
+          'bg-sky-600 hover:bg-sky-500 text-white font-black uppercase tracking-wider border border-sky-500 shadow-[0_0_12px_rgba(56,189,248,0.3)] cursor-pointer',
         icon: BookOpen,
       };
     case CourseStatus.ADVANCED:
@@ -38,7 +38,7 @@ function getStatusConfig(status?: CourseStatus) {
         buttonText: 'Inscribirse',
         buttonDisabled: false,
         buttonClass:
-          'bg-red-600 hover:bg-red-500 text-white font-black uppercase tracking-wider border border-red-500 shadow-[0_0_12px_rgba(220,38,38,0.3)] cursor-pointer',
+          'bg-sky-600 hover:bg-sky-500 text-white font-black uppercase tracking-wider border border-sky-500 shadow-[0_0_12px_rgba(56,189,248,0.3)] cursor-pointer',
         icon: BookOpen,
       };
     default:
@@ -96,7 +96,7 @@ export function generateCourseCardHtml(course: Course): string {
       <!-- Cuerpo de la Tarjeta -->
       <div class="p-4 flex flex-col justify-between flex-grow gap-3">
         <header class="flex flex-col gap-3">
-          <h3 class="text-base md:text-lg font-black text-white uppercase tracking-tight leading-snug group-hover:text-red-400 transition-colors duration-150 line-clamp-2">
+          <h3 class="text-base md:text-lg font-black text-white uppercase tracking-tight leading-snug group-hover:text-sky-400 transition-colors duration-150 line-clamp-2">
             ${title}
           </h3>
           <p class="text-sm text-zinc-300 line-clamp-3">

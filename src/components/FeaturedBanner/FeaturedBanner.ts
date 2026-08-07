@@ -1,6 +1,6 @@
 import type { Course } from '../../models';
 import { renderIcon } from '../../utils/icon.utils';
-import { Flame, BookOpen, Sparkles } from 'lucide';
+import { Flame, BookOpen } from 'lucide';
 
 /**
  * Genera el Banner de curso destacado con estilo moderno y enfocado en aprendizaje.
