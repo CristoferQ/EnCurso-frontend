@@ -1,14 +1,14 @@
-import type { Concert } from '../../models';
-import { ConcertStatus } from '../../models';
+import type { Course } from '../../models';
+import { CourseStatus } from '../../models';
 import { renderIcon } from '../../utils/icon.utils';
 import { BookOpen, AlertTriangle } from 'lucide';
 
 /**
  * Obtiene la configuración del badge y botón según el nivel de dificultad del curso.
  */
-function getStatusConfig(status?: ConcertStatus) {
+function getStatusConfig(status?: CourseStatus) {
   switch (status) {
-    case ConcertStatus.BEGINNER:
+    case CourseStatus.BEGINNER:
       return {
         label: 'Principiante',
         badgeClass:
@@ -19,7 +19,7 @@ function getStatusConfig(status?: ConcertStatus) {
           'bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider border border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)] cursor-pointer',
         icon: BookOpen,
       };
-    case ConcertStatus.INTERMEDIATE:
+    case CourseStatus.INTERMEDIATE:
       return {
         label: 'Intermedio',
         badgeClass:
@@ -30,7 +30,7 @@ function getStatusConfig(status?: ConcertStatus) {
           'bg-amber-600 hover:bg-amber-500 text-white font-black uppercase tracking-wider border border-amber-500 shadow-[0_0_12px_rgba(251,191,36,0.3)] cursor-pointer',
         icon: BookOpen,
       };
-    case ConcertStatus.ADVANCED:
+    case CourseStatus.ADVANCED:
       return {
         label: 'Avanzado',
         badgeClass:
@@ -58,8 +58,8 @@ function getStatusConfig(status?: ConcertStatus) {
 /**
  * Genera el HTML declarativo y seguro de la tarjeta del concierto.
  */
-export function generateConcertCardHtml(concert: Concert): string {
-  if (!concert) {
+export function generateCourseCardHtml(course: Course): string {
+  if (!course) {
     return `
       <article class="h-full bg-zinc-950 border border-red-600/40 rounded-xl p-5 text-center text-red-400 flex flex-col justify-center">
         <p class="font-bold uppercase text-sm">Información de concierto no disponible</p>
@@ -67,11 +67,11 @@ export function generateConcertCardHtml(concert: Concert): string {
     `;
   }
 
-  const config = getStatusConfig(concert.status); 
-  const title = concert.title || 'Curso sin título';
-  const description = concert.description || 'Descripción del curso no disponible';
-  const id = concert.id || 'desconocido';
-  const imageUrl = concert.imageUrl || '/images/punk1.png';
+  const config = getStatusConfig(course.status); 
+  const title = course.title || 'Curso sin título';
+  const description = course.description || 'Descripción del curso no disponible';
+  const id = course.id || 'desconocido';
+  const imageUrl = course.imageUrl || '/images/punk1.png';
 
   return `
     <article 
@@ -129,10 +129,10 @@ export function generateConcertCardHtml(concert: Concert): string {
 /**
  * Crea e instancia un nodo HTMLElement seguro para la tarjeta del concierto.
  */
-export function createConcertCardElement(concert: Concert): HTMLElement {
+export function createCourseCardElement(course: Course): HTMLElement {
   try {
     const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = generateConcertCardHtml(concert).trim();
+    tempDiv.innerHTML = generateCourseCardHtml(course).trim();
     const element = tempDiv.firstElementChild as HTMLElement | null;
 
     if (!element) {
@@ -141,14 +141,14 @@ export function createConcertCardElement(concert: Concert): HTMLElement {
 
     return element;
   } catch (error) {
-    let concertId = 'desconocido';
+    let courseId = 'desconocido';
     try {
-      concertId = String(concert?.id ?? 'desconocido');
+      courseId = String(course?.id ?? 'desconocido');
     } catch {
       /* id getter también lanzó */
     }
     console.error(
-      `[EnCurso] Error al crear la tarjeta del concierto (${concertId}):`,
+      `[EnCurso] Error al crear la tarjeta del concierto (${courseId}):`,
       error,
     );
 

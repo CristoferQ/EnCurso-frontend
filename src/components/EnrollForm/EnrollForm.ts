@@ -1,29 +1,27 @@
-import type { Concert } from '../../models';
+import type { Course } from '../../models';
 import { renderIcon } from '../../utils/icon.utils';
-import { Ticket, Mail, User, CheckCircle2, AlertCircle } from 'lucide';
+import { Mail, CheckCircle2, AlertCircle, BookOpen } from 'lucide';
 
 /**
- * Genera la estructura HTML declarativa del formulario de reserva de entradas.
- * @param concert Concierto opcional preseleccionado para la reserva.
+ * Genera la estructura HTML declarativa del formulario de inscripcion de cursos.
+ * @param course Curso opcional preseleccionado para la reserva.
  */
-export function renderBookingForm(concert?: Concert): string {
-  const concertBadge = concert
+export function renderBookingForm(course?: Course): string {
+  const courseBadge = course
     ? `
       <div class="mb-4 p-3 bg-zinc-900/90 border border-zinc-800 rounded-lg flex flex-col gap-3">
         <div class="flex items-center gap-2 overflow-hidden">
           <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-red-950 text-red-300 border border-red-800 shrink-0">
             SELECCIONADO
           </span>
-          <span class="text-xs font-bold text-white truncate">${concert.title}</span>
+          <span class="text-xs font-bold text-white truncate">${course.title}</span>
         </div>
-        <p class="text-xs text-zinc-400 line-clamp-3">${concert.description}</p>
+        <p class="text-xs text-zinc-400 line-clamp-3">${course.description}</p>
       </div>
     `
     : '';
 
-  const ticketIcon = renderIcon(Ticket, 'w-5 h-5 text-red-400');
   const mailIcon = renderIcon(Mail, 'w-3.5 h-3.5 text-zinc-400');
-  const userIcon = renderIcon(User, 'w-3.5 h-3.5 text-zinc-400');
 
   return `
     <section class="w-full bg-zinc-950 border border-zinc-800/90 rounded-xl p-5 md:p-6 shadow-xl relative overflow-hidden">
@@ -31,7 +29,7 @@ export function renderBookingForm(concert?: Concert): string {
 
       <header class="mb-4">
         <div class="flex items-center gap-2 mb-1">
-          ${ticketIcon}
+          ${renderIcon(BookOpen, 'w-4 h-4')}
           <h2 class="text-lg md:text-xl font-black uppercase tracking-tight text-white">
             Inscripción al curso
           </h2>
@@ -41,7 +39,7 @@ export function renderBookingForm(concert?: Concert): string {
         </p>
       </header>
 
-      ${concertBadge}
+      ${courseBadge}
 
       <form id="form-reserva" class="space-y-4" novalidate>
         <div class="space-y-1.5">
@@ -65,7 +63,7 @@ export function renderBookingForm(concert?: Concert): string {
           type="submit" 
           class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-red-600 hover:bg-red-500 text-white font-black text-xs md:text-sm uppercase tracking-wider border border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all duration-150 cursor-pointer"
         >
-          ${renderIcon(Ticket, 'w-4 h-4')}
+          ${renderIcon(BookOpen, 'w-4 h-4')}
           <span>Inscribirme</span>
         </button>
       </form>
@@ -80,10 +78,10 @@ function renderSuccessState(
   sectionElement: HTMLElement,
   email: string,
   cantidad: number,
-  concert?: Concert,
+  course?: Course,
 ): void {
   const checkIcon = renderIcon(CheckCircle2, 'w-8 h-8 text-red-500 mb-1');
-  const concertName = concert ? concert.title : 'Evento EnCurso';
+  const courseName = course ? course.title : 'Evento EnCurso';
 
   sectionElement.innerHTML = `
     <div class="text-center py-6 px-4 flex flex-col items-center gap-2">
@@ -93,7 +91,7 @@ function renderSuccessState(
       </h3>
       <p class="text-xs text-zinc-300 max-w-md">
         Se han reservado <strong class="text-white font-extrabold">${cantidad} plaza(s)</strong> para 
-        <strong class="text-red-400 font-bold">${concertName}</strong>.
+        <strong class="text-red-400 font-bold">${courseName}</strong>.
       </p>
       <p class="text-[11px] text-zinc-400 mt-1">
         Enviamos un correo de confirmación a <span class="text-zinc-200 font-semibold">${email}</span>.
@@ -110,7 +108,7 @@ function renderSuccessState(
 
   const btnNuevaReserva = sectionElement.querySelector('#btn-nueva-reserva');
   btnNuevaReserva?.addEventListener('click', () => {
-    const freshElement = createBookingFormElement(concert);
+    const freshElement = createBookingFormElement(course);
     sectionElement.replaceWith(freshElement);
   });
 }
@@ -119,15 +117,15 @@ function renderSuccessState(
  * Crea e instancia un elemento HTMLElement interactivo con validación de formulario.
  */
 export function createBookingFormElement(
-  concert?: Concert,
+  course?: Course,
   onSubmitSuccess?: (data: {
     email: string;
     cantidad: number;
-    concert?: Concert;
+    course?: Course;
   }) => void,
 ): HTMLElement {
   const container = document.createElement('div');
-  container.innerHTML = renderBookingForm(concert).trim();
+  container.innerHTML = renderBookingForm(course).trim();
   const sectionElement = container.firstElementChild as HTMLElement;
 
   const form = sectionElement.querySelector<HTMLFormElement>('#form-reserva');
@@ -181,9 +179,9 @@ export function createBookingFormElement(
         return;
       }
 
-      renderSuccessState(sectionElement, email, cantidad, concert);
+      renderSuccessState(sectionElement, email, cantidad, course);
       if (onSubmitSuccess) {
-        onSubmitSuccess({ email, cantidad, concert });
+        onSubmitSuccess({ email, cantidad, course });
       }
     });
   }

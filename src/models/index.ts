@@ -1,1 +1,1 @@
-export * from './concert.model';
+export * from './course.model';

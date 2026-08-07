@@ -1,8 +1,8 @@
-import { type Concert, ConcertStatus } from '../models';
+import { type Course, CourseStatus } from '../models';
 import { APP_CONFIG } from '../config/app.config';
 
-export class ConcertService {
-  private static readonly DATA_URL = APP_CONFIG.CONCERTS_DATA_URL;
+export class CourseService {
+  private static readonly DATA_URL = APP_CONFIG.COURSES_DATA_URL;
 
   /**
    * Utilidad privada para simular latencia de red en milisegundos.
@@ -12,12 +12,12 @@ export class ConcertService {
   }
 
   /**
-   * Obtiene todos los conciertos desde la fuente de datos.
+   * Obtiene todos los cursos desde la fuente de datos.
    * @param delayMs Tiempo en ms para simular carga de red. Por defecto usa APP_CONFIG.SIMULATED_NETWORK_DELAY_MS.
    */
-  static async getAllConcerts(
+  static async getAllCourses(
     delayMs: number = APP_CONFIG.SIMULATED_NETWORK_DELAY_MS,
-  ): Promise<Concert[]> {
+  ): Promise<Course[]> {
     if (delayMs > 0) {
       await this.delay(delayMs);
     }
@@ -41,15 +41,15 @@ export class ConcertService {
 
     // Transformación y parseo seguro de datos para cursos
     return rawData.map(
-      (item: any): Concert => ({
+      (item: any): Course => ({
         id: String(item.id),
         title: String(item.title || item.title2 || 'Curso sin título'),
         description: String(item.description || 'Descripción no disponible'),
-        status: (Object.values(ConcertStatus).includes(
-          item.status as ConcertStatus,
+        status: (Object.values(CourseStatus).includes(
+          item.status as CourseStatus,
         )
           ? item.status
-          : ConcertStatus.BEGINNER) as ConcertStatus,
+          : CourseStatus.BEGINNER) as CourseStatus,
         imageUrl: item.imageUrl ? String(item.imageUrl) : undefined,
         isFeatured: Boolean(item.isFeatured),
       }),
@@ -57,18 +57,18 @@ export class ConcertService {
   }
 
   /**
-   * Obtiene el concierto destacado o el primero disponible.
+   * Obtiene el curso destacado o el primero disponible.
    */
-  static getFeaturedConcert(concerts: Concert[]): Concert | null {
-    if (concerts.length === 0) return null;
-    return concerts.find((c) => c.isFeatured) || concerts[0];
+  static getFeaturedCourse(courses: Course[]): Course | null {
+    if (courses.length === 0) return null;
+    return courses.find((c) => c.isFeatured) || courses[0];
   }
 
   /**
-   * Filtra los conciertos para la grilla omitiendo el evento destacado si existe.
+   * Filtra los cursos para la grilla omitiendo el evento destacado si existe.
    */
-  static getGridConcerts(concerts: Concert[]): Concert[] {
-    if (concerts.length <= 1) return concerts;
-    return concerts.filter((c) => !c.isFeatured);
+  static getGridCourses(courses: Course[]): Course[] {
+    if (courses.length <= 1) return courses;
+    return courses.filter((c) => !c.isFeatured);
   }
 }

@@ -1,6 +1,6 @@
-import type { Concert } from '../models';
-import { ConcertService } from '../services/concert.service';
-import { createConcertCardElement } from '../components/ConcertCard';
+import type { Course } from '../models';
+import { CourseService } from '../services/course.service';
+import { createCourseCardElement } from '../components/CourseCard';
 import { createFeaturedBannerElement } from '../components/FeaturedBanner/FeaturedBanner';
 import {
   createBannerSkeletonElement,
@@ -10,9 +10,9 @@ import {
   createErrorStateElement,
   createEmptyStateElement,
 } from '../components/StateViews/StateViews';
-import { createBookingFormElement } from '../components/BookingForm';
+import { createBookingFormElement } from '../components/EnrollForm';
 
-export class ConcertBoardView {
+export class CourseBoardView {
   private bannerContainer: HTMLElement | null;
   private carteleraContainer: HTMLElement | null;
   private contadorFechasContainer: HTMLElement | null;
@@ -54,13 +54,13 @@ export class ConcertBoardView {
 
   /**
    * Renderiza el formulario de reserva de entradas.
-   * @param selectedConcert Concierto opcional preseleccionado para la reserva.
+   * @param selectedCourse Concierto opcional preseleccionado para la reserva.
    */
-  renderBookingForm(selectedConcert?: Concert): void {
+  renderBookingForm(selectedCourse?: Course): void {
     if (!this.bookingContainer) return;
 
     try {
-      const bookingElement = createBookingFormElement(selectedConcert, (data) => {
+      const bookingElement = createBookingFormElement(selectedCourse, (data) => {
         console.log('[EnCurso] Reserva realizada con éxito:', data);
       });
       this.bookingContainer.replaceChildren(bookingElement);
@@ -76,7 +76,7 @@ export class ConcertBoardView {
   /**
    * Renderiza el banner destacado, la grilla de conciertos, el formulario de reserva y el contador dinámico.
    */
-  renderConcerts(concerts: Concert[]): void {
+  renderCourses(courses: Course[]): void {
     if (!this.carteleraContainer) {
       console.error(
         '[EnCurso] Error crítico: No se encontró "#contenedor-cartelera" en el DOM.',
@@ -86,16 +86,16 @@ export class ConcertBoardView {
 
     // Actualizar el contador dinámico de fechas confirmadas
     if (this.contadorFechasContainer) {
-      const count = concerts.length;
+      const count = courses.length;
       const label = count === 1 ? 'Curso Disponible' : 'Cursos Disponibles';
       this.contadorFechasContainer.innerHTML = `<span>${count} ${label}</span>`;
     }
 
     // 1. Renderizar Banner Destacado
-    const featuredConcert = ConcertService.getFeaturedConcert(concerts);
-    if (this.bannerContainer && featuredConcert) {
+    const featuredCourse = CourseService.getFeaturedCourse(courses);
+    if (this.bannerContainer && featuredCourse) {
       try {
-        const bannerElement = createFeaturedBannerElement(featuredConcert);
+        const bannerElement = createFeaturedBannerElement(featuredCourse);
         this.bannerContainer.replaceChildren(bannerElement);
       } catch (bannerError) {
         console.error(
@@ -107,16 +107,16 @@ export class ConcertBoardView {
     }
 
     // 2. Renderizar Grilla de Conciertos
-    const gridConcerts = ConcertService.getGridConcerts(concerts);
+    const gridCourses = CourseService.getGridCourses(courses);
     const fragment = document.createDocumentFragment();
 
-    gridConcerts.forEach((concert) => {
+    gridCourses.forEach((course) => {
       try {
-        const cardElement = createConcertCardElement(concert);
+        const cardElement = createCourseCardElement(course);
         fragment.appendChild(cardElement);
       } catch (cardError) {
         console.error(
-          `[EnCurso] Falló el renderizado del concierto ID ${concert?.id}:`,
+          `[EnCurso] Falló el renderizado del concierto ID ${course?.id}:`,
           cardError,
         );
       }
@@ -128,30 +128,30 @@ export class ConcertBoardView {
     this.renderBookingForm();
 
     // 4. Configurar eventos de interacción para seleccionar concierto
-    this.setupBookingListeners(concerts, featuredConcert);
+    this.setupBookingListeners(courses, featuredCourse);
   }
 
   /**
    * Configura los escuchadores de evento click para seleccionar un concierto y hacer scroll hacia la reserva.
    */
-  private setupBookingListeners(concerts: Concert[], featuredConcert: Concert | null): void {
+  private setupBookingListeners(courses: Course[], featuredCourse: Course | null): void {
     const handleTicketClick = (event: Event) => {
       const target = event.target as HTMLElement;
       const button = target.closest('button');
       if (!button || button.disabled) return;
 
       const card = target.closest('[data-id]') as HTMLElement | null;
-      const concertId = card?.getAttribute('data-id');
+      const courseId = card?.getAttribute('data-id');
 
-      let selectedConcert: Concert | undefined;
-      if (concertId) {
-        selectedConcert = concerts.find((c) => c.id === concertId);
+      let selectedCourse: Course | undefined;
+      if (courseId) {
+        selectedCourse = courses.find((c) => c.id === courseId);
       } else if (this.bannerContainer?.contains(target)) {
-        selectedConcert = featuredConcert || undefined;
+        selectedCourse = featuredCourse || undefined;
       }
 
-      if (selectedConcert) {
-        this.renderBookingForm(selectedConcert);
+      if (selectedCourse) {
+        this.renderBookingForm(selectedCourse);
         this.bookingContainer?.scrollIntoView({ behavior: 'smooth' });
       }
     };

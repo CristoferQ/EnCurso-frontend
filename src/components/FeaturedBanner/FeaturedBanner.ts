@@ -1,18 +1,18 @@
-import type { Concert } from '../../models';
+import type { Course } from '../../models';
 import { renderIcon } from '../../utils/icon.utils';
 import { Flame, BookOpen, Sparkles } from 'lucide';
 
 /**
  * Genera el Banner de curso destacado con estilo moderno y enfocado en aprendizaje.
  */
-export function createFeaturedBannerElement(concert: Concert): HTMLElement {
+export function createFeaturedBannerElement(course: Course): HTMLElement {
   const container = document.createElement('section');
   container.className =
     'w-full mb-6 rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl relative group';
 
-  const imageUrl = concert.imageUrl || '/images/punk1.png';
-  const title = concert.title || 'Curso Destacado';
-  const description = concert.description || 'Descripción del curso no disponible';
+  const imageUrl = course.imageUrl || '/images/punk1.png';
+  const title = course.title || 'Curso Destacado';
+  const description = course.description || 'Descripción del curso no disponible';
 
   container.innerHTML = `
     <div class="relative min-h-[300px] md:min-h-[350px] flex flex-col justify-end p-5 md:p-7 overflow-hidden">

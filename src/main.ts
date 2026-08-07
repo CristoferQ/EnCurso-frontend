@@ -1,32 +1,32 @@
 import './styles/global.css';
-import { ConcertService } from './services/concert.service';
-import { ConcertBoardView } from './views/concertBoard.view';
+import { CourseService } from './services/course.service';
+import { CourseBoardView } from './views/courseBoard.view';
 
 /**
  * Inicializa y orquesta la aplicación EnCurso con Top-Level Await.
  */
 async function bootstrap(): Promise<void> {
-  const view = new ConcertBoardView();
+  const view = new CourseBoardView();
 
   try {
     // 1. Mostrar estado de carga (skeleton loaders)
     view.showLoading();
 
     // 2. Obtener datos de la fuente asíncrona
-    const concerts = await ConcertService.getAllConcerts();
+    const courses = await CourseService.getAllCourses();
 
     // 3. Manejo de estado vacío
-    if (concerts.length === 0) {
+    if (courses.length === 0) {
       view.showEmpty();
       return;
     }
 
     // 4. Renderizado exitoso de la cartelera
-    view.renderConcerts(concerts);
+    view.renderCourses(courses);
   } catch (error) {
     console.error('[En Curso] Error crítico durante la inicialización:', error);
     const errorMessage =
-      error instanceof Error ? error.message : 'Error al cargar los eventos.';
+      error instanceof Error ? error.message : 'Error al cargar los cursos.';
     view.showError(errorMessage, () => bootstrap());
   }
 }
