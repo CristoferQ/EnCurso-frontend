@@ -40,20 +40,107 @@ export class CourseService {
     }
 
     // Transformación y parseo seguro de datos para cursos
-    return rawData.map(
+    const courses = rawData.map(
       (item: any): Course => ({
         id: String(item.id),
         title: String(item.title || item.title2 || 'Curso sin título'),
         description: String(item.description || 'Descripción no disponible'),
         status: (Object.values(CourseStatus).includes(
-          item.status as CourseStatus,
+          (item.level ?? item.status) as CourseStatus,
         )
-          ? item.status
+          ? (item.level ?? item.status)
           : CourseStatus.BEGINNER) as CourseStatus,
         imageUrl: item.imageUrl ? String(item.imageUrl) : undefined,
         isFeatured: Boolean(item.isFeatured),
+        price: Number(item.price ?? 0),
+        videoUrl: item.videoUrl ? String(item.videoUrl) : undefined,
       }),
     );
+
+    return Promise.all(courses.map(async (course) => ({
+      ...course,
+      isEnrolled: await this.isEnrolled(course.id).catch(() => false),
+    })));
+  }
+
+  static async getCourseById(courseId: string): Promise<Course> {
+    const response = await fetch(`${this.DATA_URL}/${courseId}`);
+    if (!response.ok) {
+      throw new Error(`Error al obtener el detalle del curso: status ${response.status}`);
+    }
+    const item = await response.json();
+    return {
+      id: String(item.id),
+      title: String(item.title || 'Curso sin título'),
+      description: String(item.description || ''),
+      price: Number(item.price ?? 0),
+      status: item.level as CourseStatus,
+      videoUrl: item.videoUrl ? String(item.videoUrl) : undefined,
+      isEnrolled: await this.isEnrolled(item.id).catch(() => false),
+    };
+  }
+
+  static async isEnrolled(courseId: string): Promise<boolean> {
+    const token = localStorage.getItem('encurso_token');
+    // Sin sesión, el usuario no puede estar inscrito
+    if (!token) return false;
+    const response = await fetch(`${this.DATA_URL}/${courseId}/enroll`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (!response.ok) return false;
+    return Boolean((await response.json()).enrolled);
+  }
+
+
+  static async enroll(courseId: string): Promise<void> {
+    await this.request(`${this.DATA_URL}/${courseId}/enroll`, 'POST');
+  }
+
+  static async unenroll(courseId: string): Promise<void> {
+    await this.request(`${this.DATA_URL}/${courseId}/enroll`, 'DELETE');
+  }
+
+  static async create(course: Omit<Course, 'id' | 'isEnrolled' | 'isFeatured' | 'imageUrl'>): Promise<void> {
+    await this.request(this.DATA_URL, 'POST', this.toRequest(course));
+  }
+
+  static async update(course: Course): Promise<void> {
+    await this.request(`${this.DATA_URL}/${course.id}`, 'PUT', this.toRequest(course));
+  }
+
+  static async delete(courseId: string): Promise<void> {
+    await this.request(`${this.DATA_URL}/${courseId}`, 'DELETE');
+  }
+
+  private static async request(url: string, method: string, body?: unknown): Promise<void> {
+    const token = localStorage.getItem('encurso_token');
+    const headers: Record<string, string> = {};
+    if (body) {
+      headers['Content-Type'] = 'application/json';
+    }
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(url, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => null);
+      throw new Error(error?.message ?? 'No se pudo completar la operación.');
+    }
+  }
+
+  private static toRequest(course: Pick<Course, 'title' | 'description' | 'price' | 'status' | 'videoUrl'>) {
+    return {
+      title: course.title,
+      description: course.description,
+      price: course.price ?? 0,
+      level: course.status,
+      videoUrl: course.videoUrl,
+    };
   }
 
   /**

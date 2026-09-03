@@ -1,12 +1,16 @@
 import './styles/global.css';
 import { CourseService } from './services/course.service';
 import { CourseBoardView } from './views/courseBoard.view';
+import { createLanguageSelectorElement } from './components/LanguageSelector';
+
+// Agregar selector flotante de idiomas en la parte inferior
+document.body.appendChild(createLanguageSelectorElement());
 
 /**
  * Inicializa y orquesta la aplicación EnCurso con Top-Level Await.
  */
 async function bootstrap(): Promise<void> {
-  const view = new CourseBoardView();
+  const view = new CourseBoardView(bootstrap);
 
   try {
     // 1. Mostrar estado de carga (skeleton loaders)

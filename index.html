@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="/src/styles/global.css" />
 </head>
 
-<body class="px-4 py-5 md:px-8 md:py-6 max-w-7xl mx-auto">
+<body class="px-4 py-5 md:px-8 md:py-6 max-w-7xl mx-auto pb-20">
   <div id="app">
     <!-- Header compacto de alto contraste -->
     <header class="flex flex-col md:flex-row md:items-end justify-between pb-4 mb-5 border-b border-zinc-800 gap-3">
@@ -18,10 +18,22 @@
           EnCurso
         </h1>
       </div>
-      <p class="bg-sky-600 text-white text-xs md:text-sm font-medium tracking-wide px-2 py-0.5 rounded inline-block">
-        Siempre en curso, siempre creciendo.
-      </p>
+      <div class="flex items-center gap-3">
+        <div id="auth-header-container" class="flex items-center gap-2">
+          <!-- Renderizado dinámico: botón de Login/Register o perfil de usuario con logout -->
+          <button id="open-login-btn" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold uppercase px-3 py-1.5 rounded transition-colors shadow-sm inline-flex items-center gap-1.5">
+            <span>🔑</span>
+            <span>Acceder</span>
+          </button>
+        </div>
+        <p id="header-slogan" class="hidden sm:inline-block bg-sky-600/20 text-sky-300 border border-sky-600/40 text-xs font-medium tracking-wide px-2.5 py-1 rounded">
+          Siempre en curso, siempre creciendo.
+        </p>
+      </div>
     </header>
+
+    <div id="auth-modal-container"></div>
+    <div id="course-modal-container"></div>
 
     <main>
       <!-- Banner de Curso Destacado (Skeleton Inicial) -->
@@ -35,17 +47,20 @@
 
       <!-- Barra de sección compacta -->
       <div class="flex items-center justify-between mb-4 pt-2">
-        <h2 class="text-lg md:text-xl font-black uppercase tracking-wider text-white flex items-center gap-2">
+        <h2 id="section-title" class="text-lg md:text-xl font-black uppercase tracking-wider text-white flex items-center gap-2">
           <span class="w-2 h-5 bg-sky-600 rounded-xs inline-block"></span>
-          Cursos
+          <span>Cursos</span>
         </h2>
-        <span id="contador-courses" class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-300 bg-zinc-900 px-3 py-1 rounded border border-zinc-800 inline-flex items-center gap-1.5">
-          <svg class="animate-spin h-3 w-3 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <span>Cargando cursos...</span>
-        </span>
+        <div class="flex items-center gap-3">
+          <button id="add-course-button" class="hidden bg-sky-600 hover:bg-sky-500 text-white text-xs font-black uppercase px-3 py-1.5 rounded border border-sky-500">Agregar curso</button>
+          <span id="contador-courses" class="text-[11px] font-extrabold uppercase tracking-wider text-zinc-300 bg-zinc-900 px-3 py-1 rounded border border-zinc-800 inline-flex items-center gap-1.5">
+            <svg class="animate-spin h-3 w-3 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Cargando cursos...</span>
+          </span>
+        </div>
       </div>
 
       <!-- Grid de Cartelera Tighter (gap-5) con Skeletons Iniciales -->
@@ -75,9 +90,6 @@
           <div class="h-8 w-full bg-zinc-800 rounded mt-3"></div>
         </div>
       </div>
-
-      <!-- Formulario de inscripcion -->
-      <div id="enroll-container" class="mt-8"></div>
     </main>
   </div>
   <script type="module" src="/src/main.ts"></script>
