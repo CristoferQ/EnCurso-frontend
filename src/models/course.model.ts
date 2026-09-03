@@ -13,4 +13,7 @@ export interface Course {
   status: CourseStatus;
   imageUrl?: string;
   isFeatured?: boolean;
+  price?: number;
+  videoUrl?: string;
+  isEnrolled?: boolean;
 }
